@@ -9,9 +9,6 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.playingwithfusion.CANVenom;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.torontocodingcollective.sensors.encoder.TCanCtreEncoder;
-import com.torontocodingcollective.sensors.encoder.TCanSparkEncoder;
-import com.torontocodingcollective.sensors.encoder.TCanVenomEncoder;
 import com.torontocodingcollective.sensors.encoder.TEncoder;
 
 import edu.wpi.first.util.sendable.Sendable;
@@ -439,16 +436,16 @@ public class TMotorController extends MotorSafety implements MotorController, Se
 
 		if (motorControllerEntry.canCtreMotorController != null) {
 			if (motorControllerEntry.canCtreMotorController instanceof TalonSRX) {
-				return new TCanCtreEncoder((TalonSRX) motorControllerEntry.canCtreMotorController, getInverted());
+				return new TEncoder((TalonSRX) motorControllerEntry.canCtreMotorController, getInverted());
 			}
 		}
 
 		if (motorControllerEntry.canSparkMotorController != null) {
-			return new TCanSparkEncoder(motorControllerEntry.canSparkMotorController, getInverted());
+			return new TEncoder(motorControllerEntry.canSparkMotorController, getInverted());
 		}
 
 		if (motorControllerEntry.canVenom != null) {
-			return new TCanVenomEncoder(motorControllerEntry.canVenom, getInverted());
+			return new TEncoder(motorControllerEntry.canVenom, getInverted());
 		}
 
 		System.out.println("GetEncoder is not supported for " + this.getClass().getName());
