@@ -5,6 +5,8 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 import com.kauailabs.navx.frc.AHRS;
 import com.torontocodingcollective.TUtil;
 
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.SPI.Port;
@@ -19,7 +21,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
  * The TGyro class supports for clarity the methods of {@link Gyro} except for
  * the {@link #free()} method.
  */
-public class TGyro implements Gyro {
+public class TGyro implements Gyro, Sendable {
 
 	public enum TGyroType {
 
@@ -399,6 +401,12 @@ public class TGyro implements Gyro {
 			pigeonIMU.DestroyObject();
 			break;
 		}
+	}
+
+	@Override
+	public void initSendable(SendableBuilder builder) {
+		builder.setSmartDashboardType("Gyro");
+		builder.addDoubleProperty("Value", this::getAngle, null);
 	}
 
 }
