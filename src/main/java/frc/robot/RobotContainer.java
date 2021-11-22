@@ -7,13 +7,14 @@ package frc.robot;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.commands.pneumatics.DefaultPneumaticsCommand;
 import frc.robot.oi.OI;
 import frc.robot.subsystems.CameraSubsystem;
-import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ControlPanelSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.PowerSubsystem;
 
@@ -36,6 +37,8 @@ public class RobotContainer {
 	// FIXME: is the oi class needed?
 	private final OI oi;
 
+	private final Trigger cancelTrigger;
+
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
@@ -43,13 +46,20 @@ public class RobotContainer {
 
 		this.oi = oi;
 
+		cancelTrigger = new Trigger() {
+			@Override
+			public boolean get() {
+				return oi.getCancel();
+			}
+		};
+
 		// Configure the button bindings
 		configureButtonBindings();
 
 		// Configure default commands for each subsystem.
 		// Setting a default command automatically registers the subsystem.
-		driveSubsystem     .setDefaultCommand(new DefaultDriveCommand(oi, driveSubsystem));
-		pneumaticsSubsystem.setDefaultCommand(new DefaultPneumaticsCommand(oi, pneumaticsSubsystem));
+		driveSubsystem     .setDefaultCommand(new DefaultDriveCommand(oi, cancelTrigger, driveSubsystem));
+		pneumaticsSubsystem.setDefaultCommand(new DefaultPneumaticsCommand(oi, cancelTrigger, pneumaticsSubsystem));
 
 		// If a subsystem does not have a default command, then register
 		// that subsystem with the CommandScheduler in order to have the periodic()
@@ -80,7 +90,7 @@ public class RobotContainer {
 	 */
 	public Command getAutonomousCommand() {
 		// no auto
-		return new AutonomousCommand(oi, driveSubsystem);
+		return new AutonomousCommand(cancelTrigger, driveSubsystem);
 	}
 
 	public void autonomousInit() {

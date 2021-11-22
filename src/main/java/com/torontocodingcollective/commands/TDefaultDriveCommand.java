@@ -7,98 +7,101 @@ import com.torontocodingcollective.subsystem.TDriveSubsystem;
 import com.torontocodingcollective.subsystem.TGyroDriveSubsystem;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * Default Drive Command for Game Controllers
  * <p>
- * Implements the following basic controls for the driver. 
+ * Implements the following basic controls for the driver.
  * <ls>
- * <li>Tank, Arcade or Single Stick drive 
- * <li>Back Button to cancel a command 
- * <li>Start Button to reset the gyro and encoders 
- * <li>POV to rotate to angle 
+ * <li>Tank, Arcade or Single Stick drive
+ * <li>Back Button to cancel a command
+ * <li>Start Button to reset the gyro and encoders
+ * <li>POV to rotate to angle
  * </ls>
  */
 public class TDefaultDriveCommand extends TSafeCommand {
 
-    private final static String COMMAND_NAME = 
-            TDefaultDriveCommand.class.getSimpleName();
-    
-    private final TOi                 oi;
-    private final TDriveSubsystem     driveSubsystem;
-    private final TGyroDriveSubsystem gyroDriveSubsystem;
+	private final static String COMMAND_NAME =
+			TDefaultDriveCommand.class.getSimpleName();
 
-    public TDefaultDriveCommand(TOi oi, TDriveSubsystem driveSubsystem) {
+	private final TOi                 oi;
+	private final Trigger             cancelTrigger;
+	private final TDriveSubsystem     driveSubsystem;
+	private final TGyroDriveSubsystem gyroDriveSubsystem;
 
-        super(TConst.NO_COMMAND_TIMEOUT, oi);
-        
-        addRequirements(driveSubsystem);
+	public TDefaultDriveCommand(TOi oi, Trigger cancelTrigger, TDriveSubsystem driveSubsystem) {
 
-        this.driveSubsystem = driveSubsystem;
-        this.oi = oi;
+		super(TConst.NO_COMMAND_TIMEOUT, cancelTrigger);
 
-        if (driveSubsystem instanceof TGyroDriveSubsystem) {
-            gyroDriveSubsystem = (TGyroDriveSubsystem) driveSubsystem;
-        } else {
-            gyroDriveSubsystem = null;
-        }
-    }
+		addRequirements(driveSubsystem);
 
-    @Override
-    protected String getCommandName() { return COMMAND_NAME; }
-    
-    @Override
-    protected String getParmDesc() { 
-        return super.getParmDesc(); 
-    }
-    
-    @Override
-    public void initialize() {
-        
-        // Only print the command start message
-        // if this command was not subclassed
-        if (getCommandName().equals(COMMAND_NAME)) {
-            logMessage(getParmDesc() + " starting");
-        }
-    }
+		this.driveSubsystem = driveSubsystem;
+		this.oi = oi;
+		this.cancelTrigger = cancelTrigger;
 
-    @Override
-    public void execute() {
+		if (driveSubsystem instanceof TGyroDriveSubsystem) {
+			gyroDriveSubsystem = (TGyroDriveSubsystem) driveSubsystem;
+		} else {
+			gyroDriveSubsystem = null;
+		}
+	}
 
-        // Process all standard driver buttons before
-        // driving the robot.
+	@Override
+	protected String getCommandName() { return COMMAND_NAME; }
 
-        // Reset encoders
-        if (oi.getReset()) {
+	@Override
+	protected String getParmDesc() {
+		return super.getParmDesc();
+	}
 
-            driveSubsystem.resetEncoders();
+	@Override
+	public void initialize() {
 
-            if (gyroDriveSubsystem != null) {
-                gyroDriveSubsystem.resetGyroAngle();
-            }
-        }
+		// Only print the command start message
+		// if this command was not subclassed
+		if (getCommandName().equals(COMMAND_NAME)) {
+			logMessage(getParmDesc() + " starting");
+		}
+	}
 
-        // Enable or disable PID controllers on the
-        // drive motors
-        if (oi.getSpeedPidEnabled()) {
-            driveSubsystem.enableSpeedPids();
-        } else {
-            driveSubsystem.disableSpeedPids();
-        }
+	@Override
+	public void execute() {
 
-        // If this is a gyro subsystem,
-        // then rotate to the heading
-        if (gyroDriveSubsystem != null) {
-            int heading = oi.getRotateToHeading();
-            if (heading != -1) {
-                 CommandScheduler.getInstance().schedule(new TRotateToHeadingCommand(heading, oi, gyroDriveSubsystem));
-            }
-        }
-    }
+		// Process all standard driver buttons before
+		// driving the robot.
 
-    // Make this return true when this Command no longer needs to run execute()
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
+		// Reset encoders
+		if (oi.getReset()) {
+
+			driveSubsystem.resetEncoders();
+
+			if (gyroDriveSubsystem != null) {
+				gyroDriveSubsystem.resetGyroAngle();
+			}
+		}
+
+		// Enable or disable PID controllers on the
+		// drive motors
+		if (oi.getSpeedPidEnabled()) {
+			driveSubsystem.enableSpeedPids();
+		} else {
+			driveSubsystem.disableSpeedPids();
+		}
+
+		// If this is a gyro subsystem,
+		// then rotate to the heading
+		if (gyroDriveSubsystem != null) {
+			int heading = oi.getRotateToHeading();
+			if (heading != -1) {
+				CommandScheduler.getInstance().schedule(new TRotateToHeadingCommand(heading, cancelTrigger, gyroDriveSubsystem));
+			}
+		}
+	}
+
+	// Make this return true when this Command no longer needs to run execute()
+	@Override
+	public boolean isFinished() {
+		return false;
+	}
 }

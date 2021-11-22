@@ -13,11 +13,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  * Toggle Compressor Buttons: Start Button = Reset Encoders and Gyro Back Button
  * = Cancel any Command X Button = Automatic intake B Button = Automatic intake
  * cancel A Button = Climb arm up Y Button = Climb arm down
- * 
+ *
  * Bumpers/Triggers:
- * 
+ *
  * POV: Any Angle = Rotate to the Pressed Angle
- * 
+ *
  */
 public abstract class TOi extends SubsystemBase {
 
@@ -25,15 +25,15 @@ public abstract class TOi extends SubsystemBase {
 	 * Return the state of the cancel command button.
 	 * <p>
 	 * Typically this is the Back button on the Driver controller
-	 * 
+	 *
 	 * @return {@code true} if the cancel button is currently pressed {@code false}
 	 *         otherwise
 	 */
-	public abstract boolean getCancelCommand();
+	public abstract boolean getCancel();
 
 	/**
 	 * Get the stick position for the specified stick
-	 * 
+	 *
 	 * @param stick the {@link TStick#LEFT} or {@link TStick#RIGHT} stick for the
 	 *              driver
 	 * @return {@link TStickPosition} for the left drive stick or {@code null} if
@@ -45,7 +45,7 @@ public abstract class TOi extends SubsystemBase {
 	 * Return the state of the reset button.
 	 * <p>
 	 * Typically this is the Start button on the Driver controller
-	 * 
+	 *
 	 * @return {@code true} if the Reset button is currently pressed {@code false}
 	 *         otherwise
 	 */
@@ -56,7 +56,7 @@ public abstract class TOi extends SubsystemBase {
 	 * <p>
 	 * Robots that use a gyro should override this method in order to test the gyro
 	 * PID
-	 * 
+	 *
 	 * @return an angle between {@code 0} and {@code 360} degrees
 	 */
 	public int getRotateToHeading() {
@@ -65,7 +65,7 @@ public abstract class TOi extends SubsystemBase {
 
 	/**
 	 * Get Speed PID Enabled
-	 * 
+	 *
 	 * @return {@code true} if the Speed PIDs are enabled, {@code false} otherwise
 	 */
 	public abstract boolean getSpeedPidEnabled();

@@ -41,7 +41,7 @@ public class OI extends TOi {
 	private DriveSelector driveSelector = new DriveSelector();
 
 	@Override
-	public boolean getCancelCommand() {
+	public boolean getCancel() {
 		return driverController.getButton(TButton.BACK);
 	}
 

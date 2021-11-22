@@ -6,7 +6,7 @@ import com.torontocodingcollective.motorcontroller.TSpeeds;
 import com.torontocodingcollective.oi.TStick;
 import com.torontocodingcollective.oi.TStickPosition;
 
-import frc.robot.Robot;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.oi.OI;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -15,97 +15,97 @@ import frc.robot.subsystems.DriveSubsystem;
  */
 public class DefaultDriveCommand extends TDefaultDriveCommand {
 
-    private static final String COMMAND_NAME =
-            DefaultDriveCommand.class.getSimpleName();
+	private static final String COMMAND_NAME =
+			DefaultDriveCommand.class.getSimpleName();
 
-    private final OI                oi;
-    private final DriveSubsystem driveSubsystem;
+	private final OI                oi;
+	private final DriveSubsystem    driveSubsystem;
 
-    TDifferentialDrive differentialDrive = new TDifferentialDrive();
+	TDifferentialDrive differentialDrive = new TDifferentialDrive();
 
-    public DefaultDriveCommand(OI oi, DriveSubsystem canDriveSubsystem) {
-    	
-        // The drive logic will be handled by the TDefaultDriveCommand
-        // which also contains the requires(driveSubsystem) statement
-        super(oi, canDriveSubsystem);
+	public DefaultDriveCommand(OI oi, Trigger cancelTrigger, DriveSubsystem canDriveSubsystem) {
 
-        this.oi = oi;
-    	this.driveSubsystem = canDriveSubsystem;
-    	
-    }
+		// The drive logic will be handled by the TDefaultDriveCommand
+		// which also contains the requires(driveSubsystem) statement
+		super(oi, cancelTrigger, canDriveSubsystem);
 
-    @Override
-    protected String getCommandName() {
-        return COMMAND_NAME;
-    }
+		this.oi = oi;
+		this.driveSubsystem = canDriveSubsystem;
 
-    @Override
-    protected String getParmDesc() {
-        return super.getParmDesc();
-    }
+	}
 
-    // Called just before this Command runs the first time
-    @Override
-    public void initialize() {
+	@Override
+	protected String getCommandName() {
+		return COMMAND_NAME;
+	}
 
-        // Print the command parameters if this is the current
-        // called command (it was not sub-classed)
-        if (getCommandName().equals(COMMAND_NAME)) {
-            logMessage(getParmDesc() + " starting");
-        }
+	@Override
+	protected String getParmDesc() {
+		return super.getParmDesc();
+	}
 
-        super.initialize();
-    }
+	// Called just before this Command runs the first time
+	@Override
+	public void initialize() {
 
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    public void execute() {
+		// Print the command parameters if this is the current
+		// called command (it was not sub-classed)
+		if (getCommandName().equals(COMMAND_NAME)) {
+			logMessage(getParmDesc() + " starting");
+		}
 
-        // Check the driver controller buttons
-        super.execute();
+		super.initialize();
+	}
 
-        // Enable turbo mode
-        if (oi.getTurboOn()) {
-            driveSubsystem.enableTurbo();
-        } else {
-            driveSubsystem.disableTurbo();
-        }
+	// Called repeatedly when this Command is scheduled to run
+	@Override
+	public void execute() {
 
-        // Drive according to the type of drive selected in the
-        // operator input.
-        TStickPosition leftStickPosition = oi.getDriveStickPosition(TStick.LEFT);
-        TStickPosition rightStickPosition = oi.getDriveStickPosition(TStick.RIGHT);
+		// Check the driver controller buttons
+		super.execute();
 
-        TStick singleStickSide = oi.getSelectedSingleStickSide();
+		// Enable turbo mode
+		if (oi.getTurboOn()) {
+			driveSubsystem.enableTurbo();
+		} else {
+			driveSubsystem.disableTurbo();
+		}
 
-        TSpeeds motorSpeeds;
+		// Drive according to the type of drive selected in the
+		// operator input.
+		TStickPosition leftStickPosition = oi.getDriveStickPosition(TStick.LEFT);
+		TStickPosition rightStickPosition = oi.getDriveStickPosition(TStick.RIGHT);
 
-        switch (oi.getSelectedDriveType()) {
+		TStick singleStickSide = oi.getSelectedSingleStickSide();
 
-        case SINGLE_STICK:
-            TStickPosition singleStickPosition = rightStickPosition;
-            if (singleStickSide == TStick.LEFT) {
-                singleStickPosition = leftStickPosition;
-            }
-            motorSpeeds = differentialDrive.arcadeDrive(singleStickPosition);
-            break;
+		TSpeeds motorSpeeds;
 
-        case TANK:
-            motorSpeeds = differentialDrive.tankDrive(leftStickPosition, rightStickPosition);
-            break;
+		switch (oi.getSelectedDriveType()) {
 
-        case ARCADE:
-        default:
-            motorSpeeds = differentialDrive.arcadeDrive(leftStickPosition, rightStickPosition);
-            break;
-        }
+		case SINGLE_STICK:
+			TStickPosition singleStickPosition = rightStickPosition;
+			if (singleStickSide == TStick.LEFT) {
+				singleStickPosition = leftStickPosition;
+			}
+			motorSpeeds = differentialDrive.arcadeDrive(singleStickPosition);
+			break;
 
-        driveSubsystem.setSpeed(motorSpeeds);
-    }
+		case TANK:
+			motorSpeeds = differentialDrive.tankDrive(leftStickPosition, rightStickPosition);
+			break;
 
-    @Override
-    public boolean isFinished() {
-        // The default command does not end
-        return false;
-    }
+		case ARCADE:
+		default:
+			motorSpeeds = differentialDrive.arcadeDrive(leftStickPosition, rightStickPosition);
+			break;
+		}
+
+		driveSubsystem.setSpeed(motorSpeeds);
+	}
+
+	@Override
+	public boolean isFinished() {
+		// The default command does not end
+		return false;
+	}
 }
