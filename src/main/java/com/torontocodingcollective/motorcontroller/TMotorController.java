@@ -37,8 +37,7 @@ import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
  * <p>
  * All TMotorControllers implement the WPILib {@link MotorController} interface
  */
-public class TMotorController extends MotorSafety
-implements MotorController, Sendable, AutoCloseable {
+public class TMotorController extends MotorSafety implements MotorController, Sendable, AutoCloseable {
 
 	/**
 	 * Enum of all PWM speed controller types supported by the WPILib.
@@ -485,28 +484,10 @@ implements MotorController, Sendable, AutoCloseable {
 	@Override
 	public void initSendable(SendableBuilder builder) {
 
-		// Only initSendable on the first controller in the group that supports the call.
-		for (TMotorControllerEntry motorControllerEntry: motorControllerList) {
-
-			// CTRE motor controllers do not support the initSendable routine.
-			if (motorControllerEntry.canCtreMotorController != null) {
-				continue;
-			}
-
-			// Spark motor controllers do not support the initSendable routine.
-			if (motorControllerEntry.canSparkMotorController != null) {
-				continue;
-			}
-
-			// FIXME: this could be supported in 2022.  Not currently supported.
-			if (motorControllerEntry.canVenom != null) {
-				continue;
-			}
-
-			if (motorControllerEntry.pwmMotorController != null) {
-				motorControllerEntry.pwmMotorController.initSendable(builder);
-			}
-		}
+		builder.setSmartDashboardType("Motor Controller");
+		builder.setActuator(true);
+		builder.setSafeState(this::disable);
+		builder.addDoubleProperty("Value", this::get, this::set);
 	}
 
 	@Override
