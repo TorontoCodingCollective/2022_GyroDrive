@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.torontocodingcollective.TConst;
 import com.torontocodingcollective.motorcontroller.TMotorController.TMotorControllerType;
+import com.torontocodingcollective.sensors.gyro.TGyro.TGyroType;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -36,6 +37,7 @@ public class RobotMap {
 	// ******************************************
 	// Gyro Ports
 	// ******************************************
+	public static final TGyroType               GYRO_TYPE;
 	public static final int                     GYRO_PORT;
 	public static final boolean                 GYRO_ISINVERTED;
 
@@ -68,6 +70,7 @@ public class RobotMap {
 			RIGHT_DRIVE_MOTOR_ISINVERTED                  = TConst.NOT_INVERTED;
 			RIGHT_DRIVE_ENCODER_ISINVERTED                = TConst.NOT_INVERTED;
 
+			GYRO_TYPE       = TGyroType.ANALOG;
 			GYRO_PORT       = 0;
 			GYRO_ISINVERTED = TConst.NOT_INVERTED;
 		}

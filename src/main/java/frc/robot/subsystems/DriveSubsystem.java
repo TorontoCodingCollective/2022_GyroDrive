@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import com.torontocodingcollective.motorcontroller.TMotorController;
 import com.torontocodingcollective.sensors.encoder.TEncoder;
-import com.torontocodingcollective.sensors.gyro.TAnalogGyro;
+import com.torontocodingcollective.sensors.gyro.TGyro;
 import com.torontocodingcollective.subsystem.TGyroDriveSubsystem;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -45,7 +45,7 @@ public class DriveSubsystem extends TGyroDriveSubsystem {
 						RobotMap.RIGHT_DRIVE_MOTOR_ISINVERTED),
 
 				// Gyro used for this subsystem
-				new TAnalogGyro(RobotMap.GYRO_PORT, RobotMap.GYRO_ISINVERTED),
+				new TGyro(RobotMap.GYRO_TYPE, RobotMap.GYRO_PORT, RobotMap.GYRO_ISINVERTED),
 
 				// Gyro PID Constants
 				RobotConst.DRIVE_GYRO_PID_KP,
@@ -53,7 +53,7 @@ public class DriveSubsystem extends TGyroDriveSubsystem {
 				RobotConst.DRIVE_MAX_ROTATION_OUTPUT);
 
 		// Get the encoders attached to the CAN bus speed controllers
-		TEncoder leftEncoder = getSpeedController(TSide.LEFT).getEncoder();
+		TEncoder leftEncoder  = getSpeedController(TSide.LEFT).getEncoder();
 		TEncoder rightEncoder = getSpeedController(TSide.RIGHT).getEncoder();
 
 		super.setEncoders(
