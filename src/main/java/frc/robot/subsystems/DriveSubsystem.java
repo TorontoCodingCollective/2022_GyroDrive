@@ -45,12 +45,7 @@ public class DriveSubsystem extends TGyroDriveSubsystem {
 						RobotMap.RIGHT_DRIVE_MOTOR_ISINVERTED),
 
 				// Gyro used for this subsystem
-				new TGyro(RobotMap.GYRO_TYPE, RobotMap.GYRO_PORT, RobotMap.GYRO_ISINVERTED),
-
-				// Gyro PID Constants
-				RobotConst.DRIVE_GYRO_PID_KP,
-				RobotConst.DRIVE_GYRO_PID_KI,
-				RobotConst.DRIVE_MAX_ROTATION_OUTPUT);
+				new TGyro(RobotMap.GYRO_TYPE, RobotMap.GYRO_PORT, RobotMap.GYRO_ISINVERTED));
 
 		// Get the encoders attached to the CAN bus speed controllers
 		TEncoder leftEncoder  = getSpeedController(TSide.LEFT).getEncoder();
@@ -63,6 +58,13 @@ public class DriveSubsystem extends TGyroDriveSubsystem {
 				RobotConst.DRIVE_SPEED_PID_KP,
 				RobotConst.DRIVE_SPEED_PID_KI,
 				RobotConst.MAX_LOW_GEAR_SPEED);
+
+		super.setGyroPidGain(
+				RobotConst.DRIVE_GYRO_PID_KP,
+				RobotConst.DRIVE_GYRO_PID_KI);
+		
+		super.setMaxRotationOutput(RobotConst.DRIVE_MAX_ROTATION_OUTPUT);
+
 	}
 
 	@Override
