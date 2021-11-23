@@ -8,8 +8,7 @@ import com.torontocodingcollective.subsystem.TGyroDriveSubsystem;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.RobotConst;
-import frc.robot.RobotMap;
+import frc.robot.Constants.DriveConstants;
 
 /**
  * Chassis Subsystem
@@ -22,7 +21,7 @@ public class DriveSubsystem extends TGyroDriveSubsystem {
 	private static final boolean LOW_GEAR     = false;
 	private static final boolean HIGH_GEAR    = true;
 
-	private Solenoid             shifter      = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.SHIFTER_PNEUMATIC_PORT);
+	private Solenoid             shifter      = new Solenoid(PneumaticsModuleType.CTREPCM, DriveConstants.SHIFTER_PNEUMATIC_PORT);
 	private boolean              turboEnabled = false;
 
 	public DriveSubsystem() {
@@ -30,46 +29,52 @@ public class DriveSubsystem extends TGyroDriveSubsystem {
 		super(
 				// Left Speed Controller
 				new TMotorController(
-						RobotMap.LEFT_DRIVE_MOTOR_CONTROLLER_TYPE,
-						RobotMap.LEFT_DRIVE_MOTOR_CONTROLLER_ADDRESS,
-						RobotMap.LEFT_DRIVE_FOLLOWER_MOTOR_TYPE,
-						RobotMap.LEFT_DRIVE_FOLLOWER_MOTOR_CONTROLLER_ADDRESS,
-						RobotMap.LEFT_DRIVE_MOTOR_ISINVERTED),
+						DriveConstants.LEFT_DRIVE_MOTOR_CONTROLLER_TYPE,
+						DriveConstants.LEFT_DRIVE_MOTOR_CONTROLLER_ADDRESS,
+						DriveConstants.LEFT_DRIVE_FOLLOWER_MOTOR_TYPE,
+						DriveConstants.LEFT_DRIVE_FOLLOWER_MOTOR_CONTROLLER_ADDRESS,
+						DriveConstants.LEFT_DRIVE_MOTOR_ISINVERTED),
 
 				// Right Speed Controller
 				new TMotorController(
-						RobotMap.RIGHT_DRIVE_MOTOR_CONTROLLER_TYPE,
-						RobotMap.RIGHT_DRIVE_MOTOR_CONTROLLER_ADDRESS,
-						RobotMap.RIGHT_DRIVE_FOLLOWER_MOTOR_CONTROLLER_TYPE,
-						RobotMap.RIGHT_DRIVE_FOLLOWER_MOTOR_CONTROLLER_ADDRESS,
-						RobotMap.RIGHT_DRIVE_MOTOR_ISINVERTED),
+						DriveConstants.RIGHT_DRIVE_MOTOR_CONTROLLER_TYPE,
+						DriveConstants.RIGHT_DRIVE_MOTOR_CONTROLLER_ADDRESS,
+						DriveConstants.RIGHT_DRIVE_FOLLOWER_MOTOR_CONTROLLER_TYPE,
+						DriveConstants.RIGHT_DRIVE_FOLLOWER_MOTOR_CONTROLLER_ADDRESS,
+						DriveConstants.RIGHT_DRIVE_MOTOR_ISINVERTED),
 
 				// Gyro used for this subsystem
-				new TGyro(RobotMap.GYRO_TYPE, RobotMap.GYRO_PORT, RobotMap.GYRO_ISINVERTED));
+				new TGyro(DriveConstants.GYRO_TYPE, DriveConstants.GYRO_PORT, DriveConstants.GYRO_ISINVERTED));
 
-		// Get the encoders attached to the CAN bus speed controllers
+		/*
+		 * Get the encoders attached to the CAN bus speed controllers
+		 * NOTE: Depending on the encoder type, and where it is attached, different
+		 *       constructors would be required to make a TEncoder
+		 *       For DIO port wired speed controllers use
+		 *       TEncoder encoder = new TEncoder(dioChannelA, dioChannelB, isInverted);
+		 */
 		TEncoder leftEncoder  = getSpeedController(TSide.LEFT).getEncoder();
 		TEncoder rightEncoder = getSpeedController(TSide.RIGHT).getEncoder();
 
 		// Set up the encoders
 		super.setEncoders(
-				leftEncoder,  RobotMap.LEFT_DRIVE_MOTOR_ISINVERTED,
-				rightEncoder, RobotMap.RIGHT_DRIVE_MOTOR_ISINVERTED,
-				RobotConst.ENCODER_COUNTS_PER_INCH);
+				leftEncoder,  DriveConstants.LEFT_DRIVE_MOTOR_ISINVERTED,
+				rightEncoder, DriveConstants.RIGHT_DRIVE_MOTOR_ISINVERTED,
+				DriveConstants.ENCODER_COUNTS_PER_INCH);
 
 		// Set up the drive speed pids
 		super.setSpeedPid(
-				RobotConst.DRIVE_SPEED_PID_KP,
-				RobotConst.DRIVE_SPEED_PID_KI,
-				RobotConst.MAX_LOW_GEAR_SPEED);
+				DriveConstants.DRIVE_SPEED_PID_KP,
+				DriveConstants.DRIVE_SPEED_PID_KI,
+				DriveConstants.MAX_LOW_GEAR_SPEED);
 
 		// Set up the gyro tracking pids
 		super.setGyroPidGain(
-				RobotConst.DRIVE_GYRO_PID_KP,
-				RobotConst.DRIVE_GYRO_PID_KI);
+				DriveConstants.DRIVE_GYRO_PID_KP,
+				DriveConstants.DRIVE_GYRO_PID_KI);
 
 		// Set the max output speed used on in place pivot rotations
-		super.setMaxRotationOutput(RobotConst.DRIVE_MAX_ROTATION_OUTPUT);
+		super.setMaxRotationOutput(DriveConstants.DRIVE_MAX_ROTATION_OUTPUT);
 
 	}
 
@@ -84,13 +89,13 @@ public class DriveSubsystem extends TGyroDriveSubsystem {
 	// ********************************************************************************************************************
 	public void enableTurbo() {
 		turboEnabled = true;
-		setMaxEncoderSpeed(RobotConst.MAX_HIGH_GEAR_SPEED);
+		setMaxEncoderSpeed(DriveConstants.MAX_HIGH_GEAR_SPEED);
 		shifter.set(HIGH_GEAR);
 	}
 
 	public void disableTurbo() {
 		turboEnabled = false;
-		setMaxEncoderSpeed(RobotConst.MAX_LOW_GEAR_SPEED);
+		setMaxEncoderSpeed(DriveConstants.MAX_LOW_GEAR_SPEED);
 		shifter.set(LOW_GEAR);
 	}
 

@@ -448,7 +448,8 @@ public class TMotorController extends MotorSafety implements MotorController, Se
 			return new TEncoder(motorControllerEntry.canVenom, getInverted());
 		}
 
-		System.out.println("GetEncoder is not supported for " + this.getClass().getName());
+		System.out.println("GetEncoder is not supported for " + motorControllerEntry.motorControllerType);
+
 		return null;
 	}
 
