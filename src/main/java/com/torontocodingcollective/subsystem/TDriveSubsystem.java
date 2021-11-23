@@ -1,8 +1,8 @@
 package com.torontocodingcollective.subsystem;
 
+import com.torontocodingcollective.TSpeeds;
 import com.torontocodingcollective.TUtil;
 import com.torontocodingcollective.motorcontroller.TMotorController;
-import com.torontocodingcollective.motorcontroller.TSpeeds;
 import com.torontocodingcollective.pid.TSpeedPID;
 import com.torontocodingcollective.sensors.encoder.TEncoder;
 

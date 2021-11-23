@@ -1,6 +1,5 @@
 package com.torontocodingcollective;
 
-import com.torontocodingcollective.motorcontroller.TSpeeds;
 import com.torontocodingcollective.oi.TStickPosition;
 
 /**

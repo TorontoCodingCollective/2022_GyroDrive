@@ -1,4 +1,4 @@
-package com.torontocodingcollective.motorcontroller;
+package com.torontocodingcollective;
 
 public class TSpeeds {
 
