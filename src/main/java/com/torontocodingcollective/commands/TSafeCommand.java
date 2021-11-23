@@ -104,7 +104,7 @@ public abstract class TSafeCommand extends CommandBase {
 	@Override
 	public boolean isFinished() {
 
-		double timeSinceInitialized =  ((double)(System.currentTimeMillis() - startTime)) / 1000;
+		double timeSinceInitialized = ((double)(System.currentTimeMillis() - startTime)) / 1000;
 
 		if (timeSinceInitialized > timeout) {
 			logMessage("command timed out after " + timeSinceInitialized + "s");
