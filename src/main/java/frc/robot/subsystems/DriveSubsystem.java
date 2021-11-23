@@ -51,18 +51,24 @@ public class DriveSubsystem extends TGyroDriveSubsystem {
 		TEncoder leftEncoder  = getSpeedController(TSide.LEFT).getEncoder();
 		TEncoder rightEncoder = getSpeedController(TSide.RIGHT).getEncoder();
 
+		// Set up the encoders
 		super.setEncoders(
 				leftEncoder,  RobotMap.LEFT_DRIVE_MOTOR_ISINVERTED,
 				rightEncoder, RobotMap.RIGHT_DRIVE_MOTOR_ISINVERTED,
-				RobotConst.ENCODER_COUNTS_PER_INCH,
+				RobotConst.ENCODER_COUNTS_PER_INCH);
+
+		// Set up the drive speed pids
+		super.setSpeedPid(
 				RobotConst.DRIVE_SPEED_PID_KP,
 				RobotConst.DRIVE_SPEED_PID_KI,
 				RobotConst.MAX_LOW_GEAR_SPEED);
 
+		// Set up the gyro tracking pids
 		super.setGyroPidGain(
 				RobotConst.DRIVE_GYRO_PID_KP,
 				RobotConst.DRIVE_GYRO_PID_KI);
-		
+
+		// Set the max output speed used on in place pivot rotations
 		super.setMaxRotationOutput(RobotConst.DRIVE_MAX_ROTATION_OUTPUT);
 
 	}
