@@ -35,7 +35,7 @@ public class TDriveTimeCommand extends TSafeCommand {
 	 *            of {@link TConst#NO_COMMAND_TIMEOUT} will be used as an infinite
 	 *            timeout.
 	 * @param driveSubsystem
-	 *            that extends the TGyroDriveSubsystem
+	 *            that extends the {@link TDriveSubsystem}
 	 */
 	public TDriveTimeCommand(double speed, double timeout, TDriveSubsystem driveSubsystem) {
 		this(speed, timeout, TConst.BRAKE_WHEN_FINISHED, driveSubsystem);
@@ -56,7 +56,7 @@ public class TDriveTimeCommand extends TSafeCommand {
 	 *            {@code true} to brake when the command finishes {@code false} to
 	 *            coast into the next command.
 	 * @param driveSubsystem
-	 *            that extends the TGyroDriveSubsystem
+	 *            that extends the {@link TDriveSubsystem}
 	 */
 	public TDriveTimeCommand(double speed, double timeout, boolean brakeWhenFinished,
 			TDriveSubsystem driveSubsystem) {

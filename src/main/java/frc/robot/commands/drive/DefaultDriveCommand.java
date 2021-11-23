@@ -1,7 +1,7 @@
 package frc.robot.commands.drive;
 
+import com.torontocodingcollective.TDifferentialDrive;
 import com.torontocodingcollective.commands.TDefaultDriveCommand;
-import com.torontocodingcollective.commands.TDifferentialDrive;
 import com.torontocodingcollective.motorcontroller.TSpeeds;
 import com.torontocodingcollective.oi.TStick;
 import com.torontocodingcollective.oi.TStickPosition;
