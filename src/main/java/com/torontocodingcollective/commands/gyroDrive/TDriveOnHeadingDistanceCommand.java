@@ -3,8 +3,6 @@ package com.torontocodingcollective.commands.gyroDrive;
 import com.torontocodingcollective.TConst;
 import com.torontocodingcollective.subsystem.TGyroDriveSubsystem;
 
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-
 /**
  * Drive on a specified heading and speed for a specified distance
  */
@@ -37,9 +35,9 @@ public class TDriveOnHeadingDistanceCommand extends TDriveOnHeadingCommand {
 	 *            that extends the TGyroDriveSubsystem
 	 */
 	public TDriveOnHeadingDistanceCommand(double distanceInches, double heading, double speed, double timeout,
-			boolean brakeWhenFinished, Trigger cancelTrigger, TGyroDriveSubsystem driveSubsystem) {
+			boolean brakeWhenFinished, TGyroDriveSubsystem driveSubsystem) {
 
-		super(heading, speed, timeout, brakeWhenFinished, cancelTrigger, driveSubsystem);
+		super(heading, speed, timeout, brakeWhenFinished, driveSubsystem);
 
 		this.driveSubsystem = driveSubsystem;
 		this.distanceInches = distanceInches;

@@ -4,8 +4,6 @@ import com.torontocodingcollective.TConst;
 import com.torontocodingcollective.commands.TSafeCommand;
 import com.torontocodingcollective.subsystem.TGyroDriveSubsystem;
 
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-
 /**
  * Drive On Heading Command
  * <p>
@@ -42,13 +40,12 @@ public class TDriveOnHeadingCommand extends TSafeCommand {
 	 *            the time after which this command will end automatically a value
 	 *            of {@link TConst#NO_COMMAND_TIMEOUT} will be used as an infinite
 	 *            timeout.
-	 * @param cancelTrigger
 	 * @param driveSubsystem
 	 *            that extends the TGyroDriveSubsystem
 	 */
-	public TDriveOnHeadingCommand(double heading, double speed, double timeout, Trigger cancelTrigger,
+	public TDriveOnHeadingCommand(double heading, double speed, double timeout,
 			TGyroDriveSubsystem driveSubsystem) {
-		this(heading, speed, timeout, TConst.BRAKE_WHEN_FINISHED, cancelTrigger, driveSubsystem);
+		this(heading, speed, timeout, TConst.BRAKE_WHEN_FINISHED, driveSubsystem);
 	}
 
 	/**
@@ -69,15 +66,13 @@ public class TDriveOnHeadingCommand extends TSafeCommand {
 	 * @param brakeWhenFinished
 	 *            {@code true} to brake when the command finishes {@code false} to
 	 *            coast into the next command.
-	 * @param cancelTrigger
 	 * @param driveSubsystem
 	 *            that extends the TGyroDriveSubsystem
 	 */
 	public TDriveOnHeadingCommand(double heading, double speed, double timeout,
-			boolean brakeWhenFinished, Trigger cancelTrigger,
-			TGyroDriveSubsystem driveSubsystem) {
+			boolean brakeWhenFinished, TGyroDriveSubsystem driveSubsystem) {
 
-		super(timeout, cancelTrigger);
+		super(timeout);
 
 		this.driveSubsystem = driveSubsystem;
 

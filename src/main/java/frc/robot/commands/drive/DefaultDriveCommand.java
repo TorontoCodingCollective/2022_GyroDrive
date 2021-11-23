@@ -6,7 +6,6 @@ import com.torontocodingcollective.motorcontroller.TSpeeds;
 import com.torontocodingcollective.oi.TStick;
 import com.torontocodingcollective.oi.TStickPosition;
 
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.oi.OI;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -23,14 +22,14 @@ public class DefaultDriveCommand extends TDefaultDriveCommand {
 
 	TDifferentialDrive differentialDrive = new TDifferentialDrive();
 
-	public DefaultDriveCommand(OI oi, Trigger cancelTrigger, DriveSubsystem canDriveSubsystem) {
+	public DefaultDriveCommand(OI oi, DriveSubsystem driveSubsystem) {
 
 		// The drive logic will be handled by the TDefaultDriveCommand
 		// which also contains the requires(driveSubsystem) statement
-		super(oi, cancelTrigger, canDriveSubsystem);
+		super(oi, driveSubsystem);
 
 		this.oi = oi;
-		this.driveSubsystem = canDriveSubsystem;
+		this.driveSubsystem = driveSubsystem;
 
 	}
 

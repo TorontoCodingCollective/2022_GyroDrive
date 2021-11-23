@@ -6,7 +6,6 @@ import com.torontocodingcollective.commands.gyroDrive.TDriveOnHeadingDistanceCom
 import com.torontocodingcollective.commands.gyroDrive.TRotateToHeadingCommand;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.oi.AutoSelector;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -25,7 +24,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
 	/**
 	 * Example Autonomous Selector and Command
 	 */
-	public AutonomousCommand(Trigger cancelTrigger, DriveSubsystem driveSubsystem) {
+	public AutonomousCommand(DriveSubsystem driveSubsystem) {
 
 		// getting info
 		String robotStartPosition = AutoSelector.getRobotStartPosition();
@@ -44,7 +43,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
 			// Go forward 2 ft
 			addCommands(
 					new TDriveOnHeadingDistanceCommand(250, 0, .95, 15, TConst.BRAKE_WHEN_FINISHED,
-							cancelTrigger, driveSubsystem));
+							driveSubsystem));
 		}
 
 		/* ***********************************************************
@@ -54,7 +53,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
 			// Go forward 2 ft
 			addCommands(
 					new TDriveTimeCommand(.95, 6, TConst.BRAKE_WHEN_FINISHED,
-							cancelTrigger, driveSubsystem));
+							driveSubsystem));
 		}
 
 
@@ -67,34 +66,34 @@ public class AutonomousCommand extends SequentialCommandGroup {
 					// Go forward 2ft
 					// 24 in, 0 deg, .5 speed, 5 sec, Brake
 					new TDriveOnHeadingDistanceCommand(24, 0, .5, 5, TConst.COAST_WHEN_FINISHED,
-							cancelTrigger, driveSubsystem),
+							driveSubsystem),
 
 
 					// Make a 4 sided box movement
 
 					new TDriveOnHeadingDistanceCommand(36, 0, .5, 5, TConst.BRAKE_WHEN_FINISHED,
-							cancelTrigger, driveSubsystem),
+							driveSubsystem),
 
 					new TRotateToHeadingCommand(90,
-							cancelTrigger, driveSubsystem),
+							driveSubsystem),
 
 					new TDriveOnHeadingDistanceCommand(36, 90, .5, 5, TConst.BRAKE_WHEN_FINISHED,
-							cancelTrigger, driveSubsystem),
+							driveSubsystem),
 
 					new TRotateToHeadingCommand(180,
-							cancelTrigger, driveSubsystem),
+							driveSubsystem),
 
 					new TDriveOnHeadingDistanceCommand(36, 180, .5, 5, TConst.BRAKE_WHEN_FINISHED,
-							cancelTrigger, driveSubsystem),
+							driveSubsystem),
 
 					new TRotateToHeadingCommand(270,
-							cancelTrigger, driveSubsystem),
+							driveSubsystem),
 
 					new TDriveOnHeadingDistanceCommand(36, 270, .5, 5, TConst.BRAKE_WHEN_FINISHED,
-							cancelTrigger, driveSubsystem),
+							driveSubsystem),
 
 					new TRotateToHeadingCommand(0,
-							cancelTrigger, driveSubsystem)
+							driveSubsystem)
 					);
 		}
 	}

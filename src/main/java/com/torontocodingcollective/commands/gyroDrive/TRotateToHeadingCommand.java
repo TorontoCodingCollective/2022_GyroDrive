@@ -5,8 +5,6 @@ import com.torontocodingcollective.TUtil;
 import com.torontocodingcollective.commands.TSafeCommand;
 import com.torontocodingcollective.subsystem.TGyroDriveSubsystem;
 
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-
 /**
  * Rotate To Heading Command
  * <p>
@@ -47,14 +45,13 @@ public class TRotateToHeadingCommand extends TSafeCommand {
 	 *            the time after which this command will end automatically. A value
 	 *            of {@link TConst#NO_COMMAND_TIMEOUT} will be used as an infinite
 	 *            timeout.
-	 * @param cancelTrigger
 	 * @param driveSubsystem
 	 *            that extends the TGyroDriveSubsystem
 	 */
 	public TRotateToHeadingCommand(double heading, double maxRotationOutput, double timeout,
-			Trigger cancelTrigger, TGyroDriveSubsystem driveSubsystem) {
+			TGyroDriveSubsystem driveSubsystem) {
 
-		super(timeout, cancelTrigger);
+		super(timeout);
 
 		this.driveSubsystem = driveSubsystem;
 
@@ -84,14 +81,13 @@ public class TRotateToHeadingCommand extends TSafeCommand {
 	 *            the time after which this command will end automatically. A value
 	 *            of {@link TConst#NO_COMMAND_TIMEOUT} will be used as an infinite
 	 *            timeout.
-	 * @param cancelTrigger
 	 * @param driveSubsystem
 	 *            that extends the TGyroDriveSubsystem
 	 */
 	public TRotateToHeadingCommand(double heading, double timeout,
-			Trigger cancelTrigger, TGyroDriveSubsystem driveSubsystem) {
+			TGyroDriveSubsystem driveSubsystem) {
 
-		this(heading, -1, timeout, cancelTrigger, driveSubsystem);
+		this(heading, -1, timeout, driveSubsystem);
 	}
 
 	/**
@@ -101,14 +97,12 @@ public class TRotateToHeadingCommand extends TSafeCommand {
 	 *
 	 * @param heading
 	 *            0 <= heading < 360
-	 * @param cancelTrigger
 	 * @param driveSubsystem
 	 *            that extends the TGyroDriveSubsystem
 	 */
-	public TRotateToHeadingCommand(double heading,
-			Trigger cancelTrigger, TGyroDriveSubsystem driveSubsystem) {
+	public TRotateToHeadingCommand(double heading, TGyroDriveSubsystem driveSubsystem) {
 
-		this(heading, -1, DEFAULT_TIMEOUT, cancelTrigger, driveSubsystem);
+		this(heading, -1, DEFAULT_TIMEOUT, driveSubsystem);
 	}
 
 	@Override

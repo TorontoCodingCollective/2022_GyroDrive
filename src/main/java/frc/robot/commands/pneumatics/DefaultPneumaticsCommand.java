@@ -3,7 +3,6 @@ package frc.robot.commands.pneumatics;
 import com.torontocodingcollective.TConst;
 import com.torontocodingcollective.commands.TSafeCommand;
 
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.oi.OI;
 import frc.robot.subsystems.PneumaticsSubsystem;
 
@@ -18,9 +17,9 @@ public class DefaultPneumaticsCommand extends TSafeCommand {
 	private final PneumaticsSubsystem pneumaticsSubsystem;
 	private final OI oi;
 
-	public DefaultPneumaticsCommand(OI oi, Trigger cancelTrigger, PneumaticsSubsystem pneumaticsSubsystem) {
+	public DefaultPneumaticsCommand(OI oi, PneumaticsSubsystem pneumaticsSubsystem) {
 
-		super(TConst.NO_COMMAND_TIMEOUT, cancelTrigger);
+		super(TConst.NO_COMMAND_TIMEOUT);
 
 		this.oi = oi;
 		this.pneumaticsSubsystem = pneumaticsSubsystem;

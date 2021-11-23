@@ -7,7 +7,6 @@ import com.torontocodingcollective.subsystem.TDriveSubsystem;
 import com.torontocodingcollective.subsystem.TGyroDriveSubsystem;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * Default Drive Command for Game Controllers
@@ -26,19 +25,17 @@ public class TDefaultDriveCommand extends TSafeCommand {
 			TDefaultDriveCommand.class.getSimpleName();
 
 	private final TOi                 oi;
-	private final Trigger             cancelTrigger;
 	private final TDriveSubsystem     driveSubsystem;
 	private final TGyroDriveSubsystem gyroDriveSubsystem;
 
-	public TDefaultDriveCommand(TOi oi, Trigger cancelTrigger, TDriveSubsystem driveSubsystem) {
+	public TDefaultDriveCommand(TOi oi, TDriveSubsystem driveSubsystem) {
 
-		super(TConst.NO_COMMAND_TIMEOUT, cancelTrigger);
+		super(TConst.NO_COMMAND_TIMEOUT);
 
 		addRequirements(driveSubsystem);
 
 		this.driveSubsystem = driveSubsystem;
 		this.oi = oi;
-		this.cancelTrigger = cancelTrigger;
 
 		if (driveSubsystem instanceof TGyroDriveSubsystem) {
 			gyroDriveSubsystem = (TGyroDriveSubsystem) driveSubsystem;
@@ -94,7 +91,7 @@ public class TDefaultDriveCommand extends TSafeCommand {
 		if (gyroDriveSubsystem != null) {
 			int heading = oi.getRotateToHeading();
 			if (heading != -1) {
-				CommandScheduler.getInstance().schedule(new TRotateToHeadingCommand(heading, cancelTrigger, gyroDriveSubsystem));
+				CommandScheduler.getInstance().schedule(new TRotateToHeadingCommand(heading, gyroDriveSubsystem));
 			}
 		}
 	}

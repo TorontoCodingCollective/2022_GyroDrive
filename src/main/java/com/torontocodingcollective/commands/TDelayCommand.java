@@ -1,7 +1,5 @@
 package com.torontocodingcollective.commands;
 
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-
 /**
  *
  */
@@ -10,8 +8,8 @@ public class TDelayCommand extends TSafeCommand {
 	private static final String COMMAND_NAME =
 			TDelayCommand.class.getSimpleName();
 
-	public TDelayCommand(double delayTime, Trigger cancelTrigger) {
-		super(delayTime, cancelTrigger);
+	public TDelayCommand(double delayTime) {
+		super(delayTime);
 	}
 
 	@Override

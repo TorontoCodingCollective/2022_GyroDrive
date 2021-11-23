@@ -5,10 +5,7 @@ import com.torontocodingcollective.TUtil;
 import com.torontocodingcollective.oi.TOi;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * TSafeCommand
@@ -20,10 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public abstract class TSafeCommand extends CommandBase {
 
-	private final Trigger cancelTrigger;
 	private final double timeout;
-
-	private Command waitCommand;
 	private long startTime = 0;
 
 	/**
@@ -36,8 +30,8 @@ public abstract class TSafeCommand extends CommandBase {
 	 *            the TOi object that defines the cancel operation
 	 *            {@link TOi#getCancelCommand()}
 	 */
-	public TSafeCommand(Trigger cancelTrigger) {
-		this(TConst.DEFAULT_COMMAND_TIMEOUT, cancelTrigger);
+	public TSafeCommand() {
+		this(TConst.DEFAULT_COMMAND_TIMEOUT);
 	}
 
 	/**
@@ -53,9 +47,8 @@ public abstract class TSafeCommand extends CommandBase {
 	 *            the TOi object that defines the cancel operation
 	 *            {@link TOi#getCancelCommand()}
 	 */
-	public TSafeCommand(double timeout, Trigger cancelTrigger) {
-		this.cancelTrigger = cancelTrigger;
-		this.timeout       = timeout;
+	public TSafeCommand(double timeout) {
+		this.timeout = timeout;
 	}
 
 	/**
@@ -105,24 +98,16 @@ public abstract class TSafeCommand extends CommandBase {
 	@Override
 	public void initialize() {
 
-		waitCommand = new WaitCommand(timeout);
 		startTime = System.currentTimeMillis();
 	}
 
 	@Override
 	public boolean isFinished() {
 
-		if (isCancelled()) {
-			logMessage("command cancelled by user after "
-					+ TUtil.round(
-							(double) (System.currentTimeMillis() - startTime) / 1000, 2) + "s");
-			return true;
-		}
+		double timeSinceInitialized =  ((double)(System.currentTimeMillis() - startTime)) / 1000;
 
-		if (!waitCommand.isScheduled()) {
-			logMessage("command timed out after "
-					+ TUtil.round(
-							(double) (System.currentTimeMillis() - startTime) / 1000, 2) + "s");
+		if (timeSinceInitialized > timeout) {
+			logMessage("command timed out after " + timeSinceInitialized + "s");
 			return true;
 		}
 
@@ -134,20 +119,5 @@ public abstract class TSafeCommand extends CommandBase {
 		if (interrupted) {
 			logMessage("interrupted");
 		}
-	}
-
-	/**
-	 * Is Command Cancelled
-	 * <p>
-	 * Returns {@code true} if the user cancels the command using operator controls
-	 *
-	 * @return {@code true} if the command is to be cancelled, {@code false}
-	 *         otherwise.
-	 */
-	public boolean isCancelled() {
-		if (cancelTrigger.get()) {
-			return true;
-		}
-		return false;
 	}
 }
