@@ -504,21 +504,7 @@ public class TMotorController extends MotorSafety implements MotorController, Se
 				desc.append('|');
 			}
 
-			if (motorControllerEntry.canCtreMotorController != null) {
-				desc.append(motorControllerEntry.canCtreMotorController.getClass().getSimpleName());
-			}
-
-			if (motorControllerEntry.canSparkMotorController != null) {
-				desc.append(motorControllerEntry.canSparkMotorController.getClass().getSimpleName());
-			}
-
-			if (motorControllerEntry.canVenom != null) {
-				desc.append(motorControllerEntry.canVenom.getClass().getSimpleName());
-			}
-
-			if (motorControllerEntry.pwmMotorController != null) {
-				desc.append(motorControllerEntry.pwmMotorController.getClass().getSimpleName());
-			}
+			desc.append(motorControllerEntry.motorControllerType);
 
 			desc.append(':').append(motorControllerEntry.address);
 
