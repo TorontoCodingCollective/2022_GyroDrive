@@ -33,6 +33,65 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
 	 *            that extends the {@link TMotorController}
 	 * @param rightSpeedController
 	 *            that extends {@link TMotorController}
+	 * @param leftEncoder
+	 *            encoder for the left motor
+	 * @param rightEncoder
+	 *            encoder for the right motor
+	 * @param encoderCountsPerInch
+	 * @param speedKP
+	 *            Proportional gain for the motor speed pid. The speed PIDs
+	 *            are displayed on the SmartDashboard and can be adjusted through
+	 *            that interface
+	 * @param speedKI
+	 *            Integral gain for the motor speed pid. The speed PIDs
+	 *            are displayed on the SmartDashboard and can be adjusted through
+	 *            that interface
+	 * @param maxEncoderSpeed
+	 *            the max loaded robot encoder rate used to normalize the PID input
+	 *            encoder feedback.
+	 * @param gyro
+	 *            that extends {@link TGyro}
+	 * @param gyroKP
+	 *            Default Proportional gain for the gyro angle pid. The gyro PID is
+	 *            displayed on the SmartDashboard and can be adjusted through that
+	 *            interface
+	 * @param gyroKI
+	 *            Default Integral gain for the gyro angle pid. The gyro PID is
+	 *            displayed on the SmartDashboard and can be adjusted through that
+	 *            interface
+	 * @param maxRotationOutput
+	 *            used to control the rotation of the robot when rotating to an
+	 *            angle
+	 */
+	public TGyroDriveSubsystem(TMotorController leftSpeedController, TMotorController rightSpeedController,
+			TEncoder leftEncoder, TEncoder rightEncoder,
+			double encoderCountsPerInch, double speedKP, double speedKI, double maxEncoderSpeed,
+			TGyro gyro, double gyroKP, double gyroKI, double maxRotationOutput) {
+
+		super(leftSpeedController, rightSpeedController,
+				leftEncoder, rightEncoder,
+				encoderCountsPerInch,
+				speedKP, speedKI, maxEncoderSpeed);
+
+		this.gyro = gyro;
+		gyroPid = new TGyroPID(gyroKP, gyroKI);
+		this.maxRotationOutput = maxRotationOutput;
+		this.mode = Mode.DISABLED;
+	}
+
+	/**
+	 * Drive subsystem with left/right drive and gyro.
+	 * <p>
+	 * The GyroDrive subsystem extends the DriveSubsystem and adds has a gyro and
+	 * PID controller to control the angle heading of the robot. The GyroPID is
+	 * initialized to disabled. Use the {@link #driveOnHeading(double, double)},
+	 * {@link #rotateToHeading(double)} to enable the gyroPID, and
+	 * {@link #disableGyroPid()} to disable the gyroPID.
+	 *
+	 * @param leftSpeedController
+	 *            that extends the {@link TMotorController}
+	 * @param rightSpeedController
+	 *            that extends {@link TMotorController}
 	 * @param gyro
 	 *            that extends {@link TGyro}
 	 */
@@ -84,65 +143,6 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
 	}
 
 	/**
-	 * Drive subsystem with left/right drive and gyro.
-	 * <p>
-	 * The GyroDrive subsystem extends the DriveSubsystem and adds has a gyro and
-	 * PID controller to control the angle heading of the robot. The GyroPID is
-	 * initialized to disabled. Use the {@link #driveOnHeading(double, double)},
-	 * {@link #rotateToHeading(double)} to enable the gyroPID, and
-	 * {@link #disableGyroPid()} to disable the gyroPID.
-	 *
-	 * @param leftSpeedController
-	 *            that extends the {@link TMotorController}
-	 * @param rightSpeedController
-	 *            that extends {@link TMotorController}
-	 * @param leftEncoder
-	 *            encoder for the left motor
-	 * @param rightEncoder
-	 *            encoder for the right motor
-	 * @param encoderCountsPerInch
-	 * @param speedKP
-	 *            Proportional gain for the motor speed pid. The speed PIDs
-	 *            are displayed on the SmartDashboard and can be adjusted through
-	 *            that interface
-	 * @param speedKI
-	 *            Integral gain for the motor speed pid. The speed PIDs
-	 *            are displayed on the SmartDashboard and can be adjusted through
-	 *            that interface
-	 * @param maxEncoderSpeed
-	 *            the max loaded robot encoder rate used to normalize the PID input
-	 *            encoder feedback.
-	 * @param gyro
-	 *            that extends {@link TGyro}
-	 * @param gyroKP
-	 *            Default Proportional gain for the gyro angle pid. The gyro PID is
-	 *            displayed on the SmartDashboard and can be adjusted through that
-	 *            interface
-	 * @param gyroKI
-	 *            Default Integral gain for the gyro angle pid. The gyro PID is
-	 *            displayed on the SmartDashboard and can be adjusted through that
-	 *            interface
-	 * @param maxRotationOutput
-	 *            used to control the rotation of the robot when rotating to an
-	 *            angle
-	 */
-	public TGyroDriveSubsystem(TMotorController leftSpeedController, TMotorController rightSpeedController,
-			TEncoder leftEncoder, TEncoder rightEncoder,
-			double encoderCountsPerInch, double speedKP, double speedKI, double maxEncoderSpeed,
-			TGyro gyro, double gyroKP, double gyroKI, double maxRotationOutput) {
-
-		super(leftSpeedController, rightSpeedController,
-				leftEncoder, rightEncoder,
-				encoderCountsPerInch,
-				speedKP, speedKI, maxEncoderSpeed);
-
-		this.gyro = gyro;
-		gyroPid = new TGyroPID(gyroKP, gyroKI);
-		this.maxRotationOutput = maxRotationOutput;
-		this.mode = Mode.DISABLED;
-	}
-
-	/**
 	 * Disable the angle PID for the Drive subsystem.
 	 * <p>
 	 * NOTE: If the angle PIDs is not currently enabled, this routine has no effect
@@ -180,23 +180,6 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
 		this.speedSetpoint = speedSetpoint;
 
 		enableGyroPid(heading);
-	}
-
-	/**
-	 * Enable the gyroPID with the specified heading as a setpoint
-	 *
-	 * @param heading
-	 *            in degrees
-	 */
-	private void enableGyroPid(double heading) {
-
-		gyroPid.setSetpoint(heading);
-		if (!gyroPid.isEnabled()) {
-			gyroPid.enable();
-			// Initialize the error
-			gyroPid.calculate(gyro.getAngle());
-		}
-
 	}
 
 	/**
@@ -238,6 +221,39 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
 	 */
 	public double getGyroRate() {
 		return gyro.getRate();
+	}
+
+	@Override
+	public void periodic() {
+
+		// Set the speed from the gyroPID before udpating the super
+		double steering = 0;
+
+		if (gyroPid.isEnabled()) {
+
+			gyroPid.calculate(gyro.getAngle());
+
+			if (mode == Mode.DRIVE_ON_HEADING) {
+				steering = setDriveOnHeadingSpeeds();
+			} else {
+				steering = setRotateToHeadingSpeeds();
+			}
+		}
+
+		SmartDashboard.putNumber("Gyro Steering", steering);
+
+		super.periodic();
+
+		// Update all SmartDashboard values
+		SmartDashboard.putData("Gyro", gyro);
+		SmartDashboard.putNumber("Gyro Angle", getGyroAngle());
+
+		SmartDashboard.putData("Gyro PID", gyroPid);
+
+		if (gyro.supportsPitch()) {
+			SmartDashboard.putNumber("Gyro Pitch", gyro.getPitch());
+		}
+
 	}
 
 	/**
@@ -293,6 +309,67 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
 		this.speedSetpoint = speedSetpoint;
 
 		enableGyroPid(heading);
+	}
+
+	/**
+	 * Reset the gyro angle to a known heading angle.
+	 * <p>
+	 * This routine is useful when start autonomous to set the gyro angle to a known
+	 * configuration at the start of the match (ie pointed right = 90 degrees)
+	 *
+	 * @param angle
+	 *            new angle reading for the gyro
+	 */
+	public void setGyroAngle(double angle) {
+		gyro.setGyroAngle(angle);
+	}
+
+	public void setGyroPidGain(double kP, double kI) {
+
+		this.gyroPid.setP(kP);
+		this.gyroPid.setI(kI);
+
+		// If the gain is set to zero, the pid cannot be enabled
+		if (kP == 0 && kI == 0) {
+			disableGyroPid();
+		}
+	}
+
+	/**
+	 * The maximum rotation speed to send to the motors
+	 * <p>
+	 * This motor output speed will be sent to both motors (in opposite polarity) to
+	 * rotate the robot to a desired angle.
+	 * <p>
+	 * NOTE: This value does not try to limit the rotational speed in degrees per
+	 * second, but provides a way to control the rotation by limiting the motor
+	 * output when under PID control <br>
+	 * NOTE: The maxRotationOutput is not used when driving the robot manually (via
+	 * the joysticks).
+	 *
+	 * @param maxRotationOutput
+	 *            to use on the output motors when rotating the robot a value of
+	 *            zero will be overridden to 0.5 (half output)
+	 */
+	public void setMaxRotationOutput(double maxRotationOutput) {
+		this.maxRotationOutput = maxRotationOutput;
+	}
+
+	/**
+	 * Enable the gyroPID with the specified heading as a setpoint
+	 *
+	 * @param heading
+	 *            in degrees
+	 */
+	private void enableGyroPid(double heading) {
+
+		gyroPid.setSetpoint(heading);
+		if (!gyroPid.isEnabled()) {
+			gyroPid.enable();
+			// Initialize the error
+			gyroPid.calculate(gyro.getAngle());
+		}
+
 	}
 
 	/**
@@ -358,50 +435,6 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
 		return steering;
 	}
 
-	/**
-	 * Reset the gyro angle to a known heading angle.
-	 * <p>
-	 * This routine is useful when start autonomous to set the gyro angle to a known
-	 * configuration at the start of the match (ie pointed right = 90 degrees)
-	 *
-	 * @param angle
-	 *            new angle reading for the gyro
-	 */
-	public void setGyroAngle(double angle) {
-		gyro.setGyroAngle(angle);
-	}
-
-	public void setGyroPidGain(double kP, double kI) {
-
-		this.gyroPid.setP(kP);
-		this.gyroPid.setI(kI);
-
-		// If the gain is set to zero, the pid cannot be enabled
-		if (kP == 0 && kI == 0) {
-			disableGyroPid();
-		}
-	}
-
-	/**
-	 * The maximum rotation speed to send to the motors
-	 * <p>
-	 * This motor output speed will be sent to both motors (in opposite polarity) to
-	 * rotate the robot to a desired angle.
-	 * <p>
-	 * NOTE: This value does not try to limit the rotational speed in degrees per
-	 * second, but provides a way to control the rotation by limiting the motor
-	 * output when under PID control <br>
-	 * NOTE: The maxRotationOutput is not used when driving the robot manually (via
-	 * the joysticks).
-	 *
-	 * @param maxRotationOutput
-	 *            to use on the output motors when rotating the robot a value of
-	 *            zero will be overridden to 0.5 (half output)
-	 */
-	public void setMaxRotationOutput(double maxRotationOutput) {
-		this.maxRotationOutput = maxRotationOutput;
-	}
-
 	private double setRotateToHeadingSpeeds() {
 
 		double angleError = gyroPid.getError(gyro.getAngle());
@@ -448,39 +481,6 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
 		setSpeed(leftSpeed, -leftSpeed);
 
 		return steering;
-	}
-
-	@Override
-	public void periodic() {
-
-		// Set the speed from the gyroPID before udpating the super
-		double steering = 0;
-
-		if (gyroPid.isEnabled()) {
-
-			gyroPid.calculate(gyro.getAngle());
-
-			if (mode == Mode.DRIVE_ON_HEADING) {
-				steering = setDriveOnHeadingSpeeds();
-			} else {
-				steering = setRotateToHeadingSpeeds();
-			}
-		}
-
-		SmartDashboard.putNumber("Gyro Steering", steering);
-
-		super.periodic();
-
-		// Update all SmartDashboard values
-		SmartDashboard.putData("Gyro", gyro);
-		SmartDashboard.putNumber("Gyro Angle", getGyroAngle());
-
-		SmartDashboard.putData("Gyro PID", gyroPid);
-
-		if (gyro.supportsPitch()) {
-			SmartDashboard.putNumber("Gyro Pitch", gyro.getPitch());
-		}
-
 	}
 
 }
