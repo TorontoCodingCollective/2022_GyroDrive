@@ -7,6 +7,8 @@ package frc.robot;
 import java.util.Set;
 
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -46,6 +48,25 @@ public class RobotContainer {
 	public RobotContainer(OI oi) {
 
 		this.oi = oi;
+
+		// Set the scheduler to log Shuffleboard events for command initialize, interrupt, finish
+		// FIXME: Why is this not rolled into the standard robot framework?
+
+		CommandScheduler.getInstance()
+		.onCommandInitialize(
+				command ->
+				Shuffleboard.addEventMarker(
+						"Command initialized", command.getName(), EventImportance.kNormal));
+		CommandScheduler.getInstance()
+		.onCommandInterrupt(
+				command ->
+				Shuffleboard.addEventMarker(
+						"Command interrupted", command.getName(), EventImportance.kNormal));
+		CommandScheduler.getInstance()
+		.onCommandFinish(
+				command ->
+				Shuffleboard.addEventMarker(
+						"Command finished", command.getName(), EventImportance.kNormal));
 
 		// Configure the button bindings
 		configureButtonBindings();

@@ -69,18 +69,19 @@ public class TDriveOnHeadingDistanceCommand extends TDriveOnHeadingCommand {
 	@Override
 	public boolean isFinished() {
 
-		if (super.isFinished()) {
-			logMessage("Command ending at distance " +
-					driveSubsystem.getDistanceInches() + "inches");
-			return true;
-		}
-
 		if (driveSubsystem.getDistanceInches() > distanceInches) {
-			logMessage("Command ending at distance " +
-					driveSubsystem.getDistanceInches() + "inches");
 			return true;
 		}
 
 		return false;
+	}
+
+	@Override
+	public void end(boolean isInterrupted) {
+
+		logMessage("Command ending at distance " +
+				driveSubsystem.getDistanceInches() + "inches");
+
+		super.end(isInterrupted);
 	}
 }

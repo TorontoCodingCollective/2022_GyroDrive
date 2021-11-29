@@ -124,6 +124,7 @@ public class TDriveOnHeadingCommand extends TSafeCommand {
 
 		// If there is an error, then do nothing
 		if (error) {
+			driveSubsystem.setSpeed(0.0d, 0.0d);
 			return;
 		}
 
