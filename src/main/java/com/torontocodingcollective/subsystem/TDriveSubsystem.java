@@ -7,6 +7,7 @@ import com.torontocodingcollective.pid.TSpeedPID;
 import com.torontocodingcollective.sensors.encoder.TEncoder;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
  * DriveSubsystem
@@ -14,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * The DriveSubsystem is a left right drive with encoders on each side of the
  * drive train. The DriveSubsystm can be used with drive PIDs on or off.
  */
-public abstract class TDriveSubsystem extends TSubsystem {
+public abstract class TDriveSubsystem extends SubsystemBase {
 
 	public enum TSide { LEFT, RIGHT }
 

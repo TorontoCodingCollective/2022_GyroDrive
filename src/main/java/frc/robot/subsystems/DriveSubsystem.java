@@ -76,10 +76,7 @@ public class DriveSubsystem extends TGyroDriveSubsystem {
 		// Set the max output speed used on in place pivot rotations
 		super.setMaxRotationOutput(DriveConstants.DRIVE_MAX_ROTATION_OUTPUT);
 
-	}
-
-	@Override
-	public void init() {
+		// Initialize to Low gear
 		shifter.set(LOW_GEAR);
 	}
 

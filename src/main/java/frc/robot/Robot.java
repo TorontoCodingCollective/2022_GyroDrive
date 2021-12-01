@@ -4,11 +4,6 @@
 
 package frc.robot;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.torontocodingcollective.subsystem.TSubsystem;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -23,8 +18,6 @@ import frc.robot.oi.OI;
  * directory.
  */
 public class Robot extends TimedRobot {
-
-	public static final List<TSubsystem> subsystemLs = new ArrayList<TSubsystem>();
 
 	private OI oi;
 
@@ -43,10 +36,6 @@ public class Robot extends TimedRobot {
 		oi.init();
 
 		robotContainer = new RobotContainer(oi);
-
-		for (TSubsystem subsystem : subsystemLs) {
-			subsystem.init();
-		}
 
 		AutoSelector.init();
 	}

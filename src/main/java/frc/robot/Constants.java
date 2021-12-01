@@ -4,6 +4,8 @@ import com.torontocodingcollective.TConst;
 import com.torontocodingcollective.motorcontroller.TMotorController.TMotorControllerType;
 import com.torontocodingcollective.sensors.gyro.TGyro.TGyroType;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+
 public final class Constants {
 
 	public static final String  TEST_ROBOT                    = "TestRobot";
@@ -17,6 +19,14 @@ public final class Constants {
 		FORWARD, BACKWARD
 	};
 
+	/*
+	 * Pneumatics module type
+	 */
+	public static final PneumaticsModuleType    PNEUMATICS_MODULE_TYPE = PneumaticsModuleType.CTREPCM;
+
+	/*
+	 * Drive Subsystem Constants
+	 */
 	public static final class DriveConstants {
 
 		// ******************************************

@@ -1,25 +1,26 @@
 package frc.robot.subsystems;
 
-import com.torontocodingcollective.subsystem.TSubsystem;
-
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 /**
  *
  */
-public class PneumaticsSubsystem extends TSubsystem {
+public class PneumaticsSubsystem extends SubsystemBase {
 
-	// uncomment the compressor to enable pneumatics control
-	Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
+	Compressor compressor = null;
 
-	@Override
-	public void init() {
+	public PneumaticsSubsystem() {
+
+		// Make a new compressor based on the module
+		compressor = new Compressor(Constants.PNEUMATICS_MODULE_TYPE);
+
 		if (compressor != null) {
 			compressor.setClosedLoopControl(true);
 		}
-	};
+	}
 
 	public void disableCompressor() {
 		if (compressor != null) {

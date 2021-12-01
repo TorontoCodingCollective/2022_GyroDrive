@@ -1,9 +1,8 @@
 package frc.robot.subsystems;
 
-import com.torontocodingcollective.subsystem.TSubsystem;
-
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
  * Power Subsystem
@@ -11,17 +10,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * This subsystem contains only the Power Distribution Panel and is used to read
  * the current on a power port.
  */
-public class PowerSubsystem extends TSubsystem {
+public class PowerSubsystem extends SubsystemBase {
 
 	PowerDistribution pdp = new PowerDistribution();
 
 	public double getMotorCurrent(int port) {
 		return pdp.getCurrent(port);
 	};
-
-	@Override
-	public void init() {
-	}
 
 	// Periodically update the dashboard and any PIDs or sensors
 	@Override
