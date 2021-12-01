@@ -3,8 +3,8 @@ package com.torontocodingcollective.sensors.encoder;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.playingwithfusion.CANVenom;
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.Encoder;
@@ -27,11 +27,11 @@ public class TEncoder {
 
 	private final EncoderType encoderType;
 
-	private TalonSRX    talonSRXMotorController = null;
-	private CANEncoder  sparkMaxEncoder         = null;
-	private CANVenom    venomMotorController    = null;
-	private Counter     counter                 = null;
-	private Encoder     quadEncoder             = null;
+	private TalonSRX         talonSRXMotorController = null;
+	private RelativeEncoder  sparkMaxEncoder         = null;
+	private CANVenom         venomMotorController    = null;
+	private Counter          counter                 = null;
+	private Encoder          quadEncoder             = null;
 
 
 	private double prevEncoderPosition = 0;
